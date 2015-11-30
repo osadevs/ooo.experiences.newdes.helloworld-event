@@ -1,4 +1,4 @@
-# OSA SimAPIs module
+# OSA Event-Based Helloworld Example
 
 ## What's OSA?
 
@@ -25,15 +25,15 @@ This module is an example based on [Fractal's](http://fractal.ow2.org/) hello-wo
 This module contains an OSA experiment. In order to execute this experiment you need maven (v3.3.1 works fine). 
 If you want to try out the released or latest SNAPSHOT release, it should be sufficient to execute the following commands in the current directory (where you found this README):
 
-  Command     | effect       
-  --------------------------------   
-  `mvn -Prun`  | Run simple example
-  `mvn -Prun,verbose |  Run simple example (verbose mode)
-  `mvn -Prun,multiple`  | Run example with multiple events 
-  `mvn -Prun,multiple,verbose`  | Run example with multiple events (verbose mode)
+| Command      | effect               |
+| ------------ | -------------------- |   
+| `mvn -Prun`  | Run simple example   |
+| `mvn -Prun,verbose` |  Run simple example (verbose mode) |
+|  `mvn -Prun,multiple`  | Run example with multiple events | 
+|  `mvn -Prun,multiple,verbose`  | Run example with multiple events (verbose mode) |
   
   
-  Example:
+  Example (notice we use a nexus local maven repository proxy, hence the download from localhost on port 8081):
 ```
 ooo.experiments.newdes.helloworld-event $ mvn -Prun
 [INFO] Scanning for projects...
@@ -74,3 +74,74 @@ Downloading: http://localhost:8081/nexus/content/groups/public/org/osadev/osa/si
 [INFO] ------------------------------------------------------------------------
 ```
 
+If the previous method fails, you can try a full install first (see next section)
+
+## Install
+
+You may want to install all OSA packages from scratch for example if you want to contribute new parts or models, or if the previous execution does not work with just the example module used standalone.
+
+First you need to clone the whole set of OSA sub-modules [from github](http://github.com/osadevs/) in a directory and build everything from scratch. 
+All projects can be checked out following a flat multi-module structure (all sub-module lay side by side in a common parent dir) but for the build to work a last step is necessary: due to a bug with a third party dependency, the build must be run from the parent directory in which the pom file from the [release bundle](https://github.com/osadevs/ooo.osa-release-bundle) must be copied or linked. 
+
+On a system with the zsh shell installed this whole procedure can easily be achieved as follows:
+```
+git clone https://github.com/osadevs/ooo.osa-release-bundle.git
+cd ooo.osa-release-bundle
+./release.sh -c clone
+mvn install
+```
+
+This produces the following structure:
+```
+<install-dir>
+  +/ooo.osa-release-bundle/
+     +pom.xml
+     +relase.sh
+     +ooo.engines/
+     +ooo.osa-root/
+     +ooo.maven-config/
+     +ooo.engines.newdes/
+     +ooo.model.newdes/
+     +ooo.model.newdes.helloworld-event/
+     +ooo.model.newdes.helloworld-process/
+     +ooo.runtime.newdes/
+     +ooo.runtime.newdes.launcher.event/
+     +ooo.runtime.newdes.logger/
+     +ooo.simapis/
+     +ooo.simapis.newdes/
+     +ooo.simapis.newdes.osalet/
+     +ooo.experiments.newdes/                    
+     +ooo.experiments.newdes.helloworld-event/   
+     +ooo.experiments.newdes.helloworld-process/
+```
+
+If everything works well, the result of the last install command should be as follows:
+```
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary:
+[INFO] 
+[INFO] OSA root .......................................... SUCCESS [0.239s]
+[INFO] OSA Maven Configuration ........................... SUCCESS [0.409s]
+[INFO] OSA Simulation APIs ............................... SUCCESS [0.012s]
+[INFO] OSA New Design (newdes) reference API ............. SUCCESS [5.045s]
+[INFO] OSA Fractal Annotations (aka Osalet) .............. SUCCESS [0.113s]
+[INFO] OSA Common definitions for the newdes runtime ..... SUCCESS [0.011s]
+[INFO] OSA Simulation Runtime logger (SLF4J) ............. SUCCESS [0.084s]
+[INFO] OSA Simulation Engines ............................ SUCCESS [0.008s]
+[INFO] OSA New Design (newdes) API Engine implementation . SUCCESS [3.943s]
+[INFO] OSA Runtime Event-Driven Launcher (NewDes) ........ SUCCESS [0.056s]
+[INFO] OSA models based on the newdes API and engine ..... SUCCESS [0.352s]
+[INFO] OSA event-driven hello-world example model ........ SUCCESS [1.937s]
+[INFO] OSA process-oriented hello-world example model .... SUCCESS [1.277s]
+[INFO] OSA event-driven hello-world experiments .......... SUCCESS [0.087s]
+[INFO] OSA process-oriented hello-world experiments ...... SUCCESS [0.087s]
+[INFO] OSA newdes experiences ............................ SUCCESS [0.011s]
+[INFO] OSA New Design (newdes) Release Bundle ............ SUCCESS [0.009s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 14.135s
+[INFO] Finished at: Mon Nov 30 17:46:28 CET 2015
+[INFO] Final Memory: 41M/522M
+[INFO] ------------------------------------------------------------------------
+```

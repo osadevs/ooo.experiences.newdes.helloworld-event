@@ -22,6 +22,9 @@ This module is an example based on [Fractal's](http://fractal.ow2.org/) hello-wo
 
 ## Usage
 
+WARNING: This demo does NOT work with Java 8. You may want to use a
+tool like [jenv](http://www.jenv.be/) to manage multiple java installations.
+
 This module contains an OSA experiment. In order to execute this experiment you need maven (v3.3.1 works fine). 
 If you want to try out the released or latest SNAPSHOT release, it should be sufficient to execute the following commands in the current directory (where you found this README):
 
